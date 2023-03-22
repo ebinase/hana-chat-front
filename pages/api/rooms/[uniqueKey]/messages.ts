@@ -6,7 +6,7 @@ export type RequestData = {
   offset?: number;
 };
 
-type ResponseData =
+export type ResponseData =
   | {
       uniqueKey: string;
       totalCount: number;
@@ -16,18 +16,22 @@ type ResponseData =
     }
   | { error: string };
 
-type MesssageData = {
+export type MesssageData = {
+  id: number;
   authorName: string;
   content: string;
   createdAt: string;
   updatedAt: string;
 };
 
-const messages: MesssageData[] = [...Array(5)].fill({
-  authorName: "門下生",
-  content: "こんにちは",
-  createdAt: "2023/03/21-00:00:00",
-  updatedAt: "2023/03/21-00:00:00",
+const messages: MesssageData[] = [...Array(5)].map((_, index) => {
+  return {
+    id: index,
+    authorName: "門下生",
+    content: "こんにちは",
+    createdAt: "2023/03/21-00:00:00",
+    updatedAt: "2023/03/21-00:00:00",
+  };
 });
 
 export default function handler(
@@ -39,7 +43,7 @@ export default function handler(
     return res.status(403).json({ error: "invalid_key" });
   }
 
-  res.status(200).json({
+  return res.status(200).json({
     uniqueKey: uniqueKey,
     totalCount: messages.length,
     limit: 100,
