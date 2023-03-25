@@ -1,7 +1,6 @@
 import { Suspense} from 'react'
 import Link from 'next/link';
-
-import Loading from './loding';
+import Loading from '../../../loding';
 import Messages from './messages';
 
 const Page = async ({ params }: { params: { uniqueKey: string } }) => {
