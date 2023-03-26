@@ -46,8 +46,8 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
 
     // 受信時の処理
     socketRef.current.onmessage = function (event) {
-      console.log('RecievedMessage!!');
-      mutate(event.data);
+      console.log('MessageRecieved!!');
+      setMessages((old) => [...old, event.data])
     };
 
     socketRef.current.onclose = function () {
