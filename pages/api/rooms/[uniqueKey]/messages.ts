@@ -23,7 +23,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Messag
       totalCount: messages.length,
       limit: 100,
       offset: 0,
-      messages: messages,
+      messages: uniqueKey === 'abvd-egfa-888a-3267' ? messages : [],
     });
   }, 2000);
 }
