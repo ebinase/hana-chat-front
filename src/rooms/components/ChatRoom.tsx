@@ -1,8 +1,7 @@
 'use client';
 
 import Loading from '../../../app/loding';
-import useSWR, { KeyedMutator } from 'swr';
-import useSWRImmutable from 'swr/immutable'
+import useSWRImmutable from 'swr/immutable';
 import { MesssageData } from '../share/types/API/messages';
 import Messages from './Messages';
 import Link from 'next/link';
@@ -16,12 +15,11 @@ type Result = {
 };
 
 const useChat = (uniqueKey: string): Result => {
-  // TODO: useSWRMutationも検討する
   const { data, isLoading } = useSWRImmutable(`/api/rooms/${uniqueKey}/messages`, fetcher);
 
   return {
     data: data?.messages ?? [],
-    isLoading
+    isLoading,
   };
 };
 
@@ -44,12 +42,6 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
       console.log('Connected');
     };
 
-    // 受信時の処理
-    socketRef.current.onmessage = function (event) {
-      console.log('MessageRecieved!!');
-      setMessages((old) => [...old, event.data])
-    };
-
     socketRef.current.onclose = function () {
       console.log('closed');
       setIsConnected(false);
@@ -63,30 +55,55 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
     };
   }, []);
 
+  useEffect(() => {
+    // 受信時の処理
+    if (!socketRef.current) {
+      console.log('有効なWebSocket接続がありません！');
+      return;
+    }
+
+    socketRef.current.onmessage = function (event) {
+      console.log('MessageRecieved!!');
+      setMessages((old) => [
+        ...old,
+        {
+          id: messages.length + 1,
+          authorName: 'Server',
+          content: event.data,
+          createdAt: '2023/03/21-00:00:00',
+          updatedAt: '2023/03/21-00:00:00',
+        },
+      ]);
+    };
+  }, [socketRef, messages]);
+
   const sendMessage = (event: any) => {
     event.preventDefault();
     const content = event.target[0].value;
-    if (!content) return
+    if (!content) return;
 
-    isConnected ? socketRef.current?.send(content) : console.log('WebSocketつながってないよ！')
-    setMessages((old) => [...old, {
-      id: messages.length+1,
-      authorName: 'you',
-      content,
-      createdAt: '2023/03/21-00:00:00',
-    updatedAt: '2023/03/21-00:00:00',
-    }])
+    isConnected ? socketRef.current?.send(content) : console.log('WebSocketつながってないよ！');
+    setMessages((old) => [
+      ...old,
+      {
+        id: messages.length + 1,
+        authorName: 'you',
+        content,
+        createdAt: '2023/03/21-00:00:00',
+        updatedAt: '2023/03/21-00:00:00',
+      },
+    ]);
   };
 
-  if (!isLoading && data && messages.length === 0) {
-    setMessages(data);
-  }
-
-  console.log(messages);
+  useEffect(() => {
+    if (!isLoading && data) {
+      setMessages(data);
+    }
+  }, [isLoading, data]);
 
   return (
     <div className='min-h-screen flex flex-col'>
-      <header className='bg-fuchsia-900 px-4 py-4 flex justify-between md-flex-col'>
+      <header className='bg-fuchsia-900 px-4 py-4 flex justify-between md-flex-col text-center'>
         <div className='flex gap-3'>
           <Link href={'/'} className='text-white font-extrabold'>
             {'<'}
@@ -97,8 +114,8 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
         <div className='text-white'>メニュー</div>
       </header>
       <main className='py-0 px-8 flex flex-col flex-grow'>
-        <div className='flex-grow my-2'>
-          {isLoading ? <Loading /> : <Messages messages={messages}/>}
+        <div className='flex-grow my-2 h-100'>
+          {isLoading ? <Loading /> : <Messages messages={messages} />}
         </div>
         <form onSubmit={sendMessage}>
           <div className='bg-slate-200 py-4 px-6 flex justify-between gap-4'>
