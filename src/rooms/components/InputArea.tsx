@@ -1,27 +1,27 @@
 'use client';
 
-import { ChangeEvent, KeyboardEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useState } from 'react';
 
 type Props = { sendMessage: (content: string) => void };
 
 const InputArea: React.FC<Props> = ({ sendMessage }) => {
   const [value, setValue] = useState<string>('');
-  
+
   const submitMessage = () => {
     sendMessage(value);
     setValue('');
-  }
+  };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+    if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
       event.preventDefault();
-      submitMessage()
+      submitMessage();
     }
-  }
+  };
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setValue(event.target.value);
-  }
+  };
 
   return (
     <div className='mb-3'>
@@ -30,8 +30,8 @@ const InputArea: React.FC<Props> = ({ sendMessage }) => {
           rows={1}
           className='grow p-3 bg-transparent focus:outline-none resize-none overflow-y-hidden'
           value={value}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
         />
         <button onClick={submitMessage} className='text-gray-600 px-3 hover:bg-white/90 rounded-lg'>
           送信

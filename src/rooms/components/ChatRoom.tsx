@@ -7,6 +7,7 @@ import Messages from './Messages';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import InputArea from './InputArea';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -29,9 +30,10 @@ type Props = { uniqueKey: string };
 const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
   const router = useRouter();
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
-    if (e.target.id === 'backGround') {
+    const target = e.target as HTMLDivElement;
+    if (target.id === 'backGround') {
       router.push('/');
     }
   };
@@ -73,10 +75,10 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
 
     // 受信時の処理
     socketRef.current.onmessage = (event: { data: string }) => {
-    // socketRef.current.onmessage = (event: { data: MesssageData&{uniqueKey: string} }) => {
-    //   if (event.data.uniqueKey !== uniqueKey) {
-    //     return;
-    //   }
+      // socketRef.current.onmessage = (event: { data: MesssageData&{uniqueKey: string} }) => {
+      //   if (event.data.uniqueKey !== uniqueKey) {
+      //     return;
+      //   }
       console.log('MessageRecieved!!');
 
       setMessages((old) => [
@@ -92,9 +94,13 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
     };
   }, [socketRef, messages]);
 
-  const sendMessage = (event: any) => {
-    event.preventDefault();
-    const content = event.target[0].value;
+  useEffect(() => {
+    if (!isLoading && data) {
+      setMessages(data);
+    }
+  }, [isLoading, data]);
+
+  const sendMessage = (content: string) => {
     console.log(content);
     if (!content) return;
 
@@ -111,19 +117,13 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
     ]);
   };
 
-  useEffect(() => {
-    if (!isLoading && data) {
-      setMessages(data);
-    }
-  }, [isLoading, data]);
-
   return (
     <div
       id='backGround'
-      className='h-screen w-full flex items-center justify-center'
+      className='h-full w-full flex items-center justify-center'
       onClick={handleClick}
     >
-      <div className='basis-[780px] shrink grow-0 flex flex-col text-center mx-4 bg-white/30 backdrop-blur-lg rounded-md border border-white/40 shadow-lg'>
+      <div className='basis-[780px] shrink grow-0 h-screen flex flex-col text-center bg-white/30 backdrop-blur-lg rounded-md border border-white/40 shadow-lg'>
         <header className='px-4 py-4 flex justify-between text-center'>
           <div className='basis-[20%] text-left shrink-0'>
             <Link href={'/'} className='text-white font-extrabold'>
@@ -133,23 +133,13 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
           <div className='grow'>
             <h2 className='text-white font-extrabold text-2xl'>Sample Room</h2>
           </div>
-          <div className='basis-[20%] text-right  shrink-0'>
-          </div>
+          <div className='basis-[20%] text-right  shrink-0'></div>
         </header>
-        <main className='py-0 px-8 flex flex-col flex-grow'>
-          <div className='flex-grow my-2 h-max'>
-            {isLoading ? <Loading /> : <Messages messages={messages} />}
+        <main className='px-8 flex flex-col flex-grow'>
+          <div className='grow my-2 shrink-0'>
+            <Messages messages={messages} dummy={isLoading} />
           </div>
-          <div className='border-t-gray-400'>
-             <form onSubmit={sendMessage}>
-              <div className='py-4 flex justify-between gap-4'>
-                <input className='grow p-3 bg-white/50 focus:outline-none focus:bg-white/90' type='text' />
-                <button type='submit'>
-                  送信
-                </button>
-              </div>
-          </form>
-         </div>
+          <InputArea sendMessage={sendMessage} />
         </main>
       </div>
     </div>
