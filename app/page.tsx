@@ -3,9 +3,10 @@
 import type { NextPage } from 'next';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
+import { MouseEvent } from 'react';
 
-const tilt = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-  const target: (Element & { style: any }) | null = document.querySelector('#tiltContainer');
+const tilt = (e: MouseEvent<HTMLDivElement>) => {
+  const target = document.querySelector<HTMLDivElement>('#tiltContainer');
   if (!target) {
     return;
   }
@@ -13,7 +14,7 @@ const tilt = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
   const xAxis = (window.innerWidth / 2 - e.pageX) / 10;
   const yAxis = (window.innerHeight / 2 - e.pageY) / 10;
 
-  const easingFactor = target.contains(e.target) ? 0.05 : 0.6; // タイル上にいるときは傾きを緩やかにする
+  const easingFactor = target.contains(e.target as Node) ? 0.05 : 0.4; // タイル上にいるときは傾きを緩やかにする
   const tiltX = yAxis * easingFactor;
   const tiltY = -xAxis * easingFactor;
   target.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
