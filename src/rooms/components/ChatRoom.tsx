@@ -120,10 +120,10 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
   return (
     <div
       id='backGround'
-      className='h-full w-full flex items-center justify-center'
+      className='h-screen w-screen flex items-center justify-center'
       onClick={handleClick}
     >
-      <div className='basis-[780px] shrink grow-0 h-screen flex flex-col text-center bg-white/30 backdrop-blur-lg rounded-md border border-white/40 shadow-lg'>
+      <div className='basis-[780px] shrink grow-0 h-full md:h-auto flex flex-col text-center bg-white/30 backdrop-blur-lg rounded-md border border-white/40 shadow-lg'>
         <header className='px-4 py-4 flex justify-between text-center'>
           <div className='basis-[20%] text-left shrink-0'>
             <Link href={'/'} className='text-white font-extrabold'>
@@ -136,7 +136,7 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
           <div className='basis-[20%] text-right  shrink-0'></div>
         </header>
         <main className='px-8 flex flex-col flex-grow'>
-          <div className='grow my-2 shrink-0'>
+          <div className='my-2'>
             <Messages messages={messages} dummy={isLoading} />
           </div>
           <InputArea sendMessage={sendMessage} />
