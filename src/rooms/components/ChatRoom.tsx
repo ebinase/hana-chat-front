@@ -1,9 +1,8 @@
 'use client';
 
-import Loading from '../../../app/loding';
 import useSWRImmutable from 'swr/immutable';
 import { MesssageData } from '../share/types/API/messages';
-import Messages from './Messages';
+import MessageTimeline from './MessageTimeline';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -137,7 +136,7 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
         </header>
         <main className='px-8 flex flex-col flex-grow'>
           <div className='my-2'>
-            <Messages messages={messages} dummy={isLoading} />
+            <MessageTimeline messages={messages} isLoading={isLoading} />
           </div>
           <InputArea sendMessage={sendMessage} />
         </main>
