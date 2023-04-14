@@ -1,5 +1,4 @@
 import '../styles/globals.css';
-import Footer from './footer';
 
 export const metadata = {
   title: 'hana-chat',
