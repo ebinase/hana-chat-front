@@ -1,10 +1,13 @@
 'use client';
 
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import useUserName from '../share/hooks/useUserName';
 
 type Props = { sendMessage: (content: string) => void };
 
 const InputArea: React.FC<Props> = ({ sendMessage }) => {
+  const { name, setName } = useUserName();
+
   const [value, setValue] = useState<string>('');
 
   const submitMessage = () => {
@@ -25,6 +28,15 @@ const InputArea: React.FC<Props> = ({ sendMessage }) => {
 
   return (
     <div className='mb-3'>
+      <div className='text-left text-sm text-gray-700/60'>
+        {'> '}
+        <input
+          type='text'
+          className='bg-transparent focus:outline-none'
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
       <div className='flex justify-between gap-4 bg-white/50 rounded-lg  focus:bg-white/90'>
         <textarea
           rows={1}

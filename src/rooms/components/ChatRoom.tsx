@@ -135,7 +135,7 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
           <div className='grow'>
             <h2 className='text-white font-extrabold text-2xl'>Sample Room</h2>
           </div>
-          <div className='basis-[20%] text-right  shrink-0'>{name}</div>
+          <div className='basis-[20%] text-right  shrink-0'></div>
         </header>
         <main className='px-8 flex flex-col flex-grow'>
           <div className='my-2'>
