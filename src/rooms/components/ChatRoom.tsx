@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import InputArea from './InputArea';
+import { useCookies } from 'react-cookie';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -99,6 +100,8 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
     }
   }, [isLoading, data]);
 
+  const [cookies] = useCookies(['name']);
+
   const sendMessage = (content: string) => {
     console.log(content);
     if (!content) return;
@@ -108,7 +111,7 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
       ...old,
       {
         id: messages.length + 1,
-        authorName: 'you',
+        authorName: cookies.name,
         content,
         createdAt: '2023/03/21-00:00:00',
         updatedAt: '2023/03/21-00:00:00',
@@ -132,7 +135,7 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
           <div className='grow'>
             <h2 className='text-white font-extrabold text-2xl'>Sample Room</h2>
           </div>
-          <div className='basis-[20%] text-right  shrink-0'></div>
+          <div className='basis-[20%] text-right  shrink-0'>{cookies.name}</div>
         </header>
         <main className='px-8 flex flex-col flex-grow'>
           <div className='my-2'>

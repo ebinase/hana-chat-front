@@ -4,6 +4,7 @@ import type { NextPage } from 'next';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
 import { MouseEvent } from 'react';
+import { useCookies } from 'react-cookie';
 
 const tilt = (e: MouseEvent<HTMLDivElement>) => {
   const target = document.querySelector<HTMLDivElement>('#tiltContainer');
@@ -21,6 +22,7 @@ const tilt = (e: MouseEvent<HTMLDivElement>) => {
 };
 
 const Home: NextPage = () => {
+  const [cookies, setCookie] = useCookies(['name']);
   return (
     <div>
       <main className='h-screen w-full flex items-center justify-center' onMouseMove={tilt}>
@@ -52,6 +54,7 @@ const Home: NextPage = () => {
               type='text'
               placeholder='000000000'
               className='bg-white/40 text-center h-max focus:outline-none focus:shadow-white/50 focus:shadow-md'
+              onBlur={(e) => setCookie('name', e.target.value)}
             />
           </div>
 
