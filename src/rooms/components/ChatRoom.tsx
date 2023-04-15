@@ -5,7 +5,6 @@ import { MesssageData } from '../share/types/API/messages';
 import MessageTimeline from './MessageTimeline';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import InputArea from './InputArea';
 import useUserName from '../share/hooks/useUserName';
 
@@ -28,16 +27,6 @@ const useChat = (uniqueKey: string): Result => {
 type Props = { uniqueKey: string };
 
 const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
-  const router = useRouter();
-
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const target = e.target as HTMLDivElement;
-    if (target.id === 'backGround') {
-      router.push('/');
-    }
-  };
-
   const { name } = useUserName();
 
   const { data, isLoading } = useChat(uniqueKey);
@@ -123,7 +112,6 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
     <div
       id='backGround'
       className='h-screen w-screen flex items-center justify-center'
-      onClick={handleClick}
     >
       <div className='basis-[780px] shrink grow-0 h-full md:h-auto flex flex-col text-center bg-white/30 backdrop-blur-lg rounded-md border border-white/40 shadow-lg'>
         <header className='px-4 py-4 flex justify-between text-center'>
