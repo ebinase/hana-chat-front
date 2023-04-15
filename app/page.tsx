@@ -1,7 +1,6 @@
 'use client';
 
 import type { NextPage } from 'next';
-import styles from '../styles/Home.module.css';
 import Link from 'next/link';
 import { MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
@@ -83,7 +82,6 @@ const Home: NextPage = () => {
           </div>
         </div>
       </main>
-      <footer className={styles.footer}></footer>
     </div>
   );
 };
