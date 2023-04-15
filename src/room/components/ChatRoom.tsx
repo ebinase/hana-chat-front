@@ -8,13 +8,10 @@ import useChat from '../hooks/useChat';
 type Props = { uniqueKey: string };
 
 const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
-  const {messages, isLoading, sendMessage} = useChat({uniqueKey})
+  const { messages, isLoading, sendMessage } = useChat(uniqueKey);
 
   return (
-    <div
-      id='backGround'
-      className='h-screen w-screen flex items-center justify-center'
-    >
+    <div id='backGround' className='h-screen w-screen flex items-center justify-center'>
       <div className='basis-[780px] shrink grow-0 h-full md:h-auto flex flex-col text-center bg-white/30 backdrop-blur-lg rounded-md border border-white/40 shadow-lg'>
         <header className='px-4 py-4 flex justify-between text-center'>
           <div className='basis-[20%] text-left shrink-0'>
