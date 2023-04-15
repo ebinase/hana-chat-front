@@ -1,6 +1,6 @@
 'use client';
 
-import { MesssageData } from '../share/types/API/messages';
+import { MesssageData } from '../../share/types/API/messages';
 
 type Props = {
   message: MesssageData;

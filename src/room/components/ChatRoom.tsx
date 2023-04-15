@@ -1,12 +1,12 @@
 'use client';
 
 import useSWRImmutable from 'swr/immutable';
-import { MesssageData } from '../share/types/API/messages';
+import { MesssageData } from '../../share/types/API/messages';
 import MessageTimeline from './MessageTimeline';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import InputArea from './InputArea';
-import useUserName from '../share/hooks/useUserName';
+import useUserName from '../../share/hooks/useUserName';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 

@@ -58,7 +58,7 @@ const Home: NextPage = () => {
           <h1 className='text-white/80 text-4xl'>Welcome to HANA-Chat</h1>
 
           <div className='mt-10 flex justify-between gap-2'>
-            <div className='w-7 fill-white/50' style={{ transform: 'scale(-1,1)' }}>
+            <div className='w-7 fill-white/50'>
               <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>
                 <g transform='translate(-14.472 -263.847)'>
                   <path

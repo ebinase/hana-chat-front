@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useLayoutEffect, useRef } from 'react';
-import { MesssageData } from '../share/types/API/messages';
+import { MesssageData } from '../../share/types/API/messages';
 import Message from './Message';
 import DummyMessage from './DummyMessage';
-import useUserName from '../share/hooks/useUserName';
+import useUserName from '../../share/hooks/useUserName';
 
 type Props = {
   messages: MesssageData[];

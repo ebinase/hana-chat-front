@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { MessageResponse, MesssageData } from '../../../../src/rooms/share/types/API/messages';
+import { MessageResponse, MesssageData } from '../../../../src/share/types/API/messages';
 
 const messages: MesssageData[] = [...Array(5)].map((_, index) => {
   return {

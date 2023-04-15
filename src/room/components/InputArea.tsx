@@ -1,7 +1,7 @@
 'use client';
 
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
-import useUserName from '../share/hooks/useUserName';
+import useUserName from '../../share/hooks/useUserName';
 
 type Props = { sendMessage: (content: string) => void };
 

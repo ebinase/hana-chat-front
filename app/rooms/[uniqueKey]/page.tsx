@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
-import ChatRoom from '../../../src/rooms/components/ChatRoom';
+import ChatRoom from '../../../src/room/components/ChatRoom';
 
 type Pramas = { params: { uniqueKey: string } };
 
