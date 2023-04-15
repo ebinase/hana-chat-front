@@ -33,7 +33,10 @@ const InputArea: React.FC<Props> = ({ sendMessage }) => {
           onChange={handleChange}
           onKeyDown={handleKeyDown}
         />
-        <button onClick={submitMessage} className='text-gray-600 px-3 hover:bg-white/90 rounded-lg'>
+        <button
+          onClick={submitMessage}
+          className='text-gray-600 px-3 hover:text-gray-500 hover:font-bold rounded-lg'
+        >
           送信
         </button>
       </div>
