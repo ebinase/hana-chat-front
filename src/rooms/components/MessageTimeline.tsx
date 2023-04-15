@@ -5,6 +5,7 @@ import { MesssageData } from '../share/types/API/messages';
 import Message from './Message';
 import DummyMessage from './DummyMessage';
 import { useCookies } from 'react-cookie';
+import useUserName from '../share/hooks/useUserName';
 
 type Props = {
   messages: MesssageData[];
@@ -20,12 +21,12 @@ const MessageTimeline: React.FC<Props> = ({ messages, isLoading }) => {
 
   const displayData = !isLoading ? messages : [...Array(10)];
 
-  const [cookies] = useCookies(['name']);
+  const { name } = useUserName();
 
   return (
     <div className='flex flex-col gap-3 overflow-y-auto h-[650px]'>
       {displayData.map((message, index) => {
-        const isMyMessage = message?.authorName === cookies.name;
+        const isMyMessage = message?.authorName === name;
         return (
           <div
             key={index}
