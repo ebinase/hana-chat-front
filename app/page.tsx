@@ -4,7 +4,7 @@ import type { NextPage } from 'next';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
 import { MouseEvent } from 'react';
-import useUserName from '../src/rooms/share/hooks/useUserName';
+import { useRouter } from 'next/navigation';
 
 const tilt = (e: MouseEvent<HTMLDivElement>) => {
   const target = document.querySelector<HTMLDivElement>('#tiltContainer');
@@ -22,7 +22,15 @@ const tilt = (e: MouseEvent<HTMLDivElement>) => {
 };
 
 const Home: NextPage = () => {
-  const {name, setName} = useUserName();
+  const router = useRouter();
+
+  const handleSearch = (event: React.FocusEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const target = event.target as HTMLInputElement;
+    if (target.value.length === 36) {
+      router.push('/rooms/' + target.value);
+    }
+  };
   return (
     <div>
       <main className='h-screen w-full flex items-center justify-center' onMouseMove={tilt}>
@@ -49,17 +57,27 @@ const Home: NextPage = () => {
 
           <h1 className='text-white/80 text-4xl'>Welcome to HANA-Chat</h1>
 
-          <div className='mt-10'>
+          <div className='mt-10 flex justify-between gap-2'>
+            <div className='w-7 fill-white/50' style={{ transform: 'scale(-1,1)' }}>
+              <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>
+                <g transform='translate(-14.472 -263.847)'>
+                  <path
+                    d='M144.663,286.184a76.265,76.265,0,1,0-14.4,119.046L183.534,458.5a18.1,18.1,0,1,0,25.591-25.591l-53.269-53.268a76.265,76.265,0,0,0-11.195-93.456ZM124.12,306.728a47.211,47.211,0,1,1-66.767,0,47.212,47.212,0,0,1,66.767,0Z'
+                    transform='translate(0 0)'
+                  />
+                </g>
+              </svg>
+            </div>
             <input
               type='text'
-              placeholder='000000000'
-              className='bg-white/40 text-center h-max focus:outline-none focus:shadow-white/50 focus:shadow-md'
-              onBlur={(e) => setName(e.target.value)}
+              placeholder='ルームIDを入力...'
+              className='grow bg-white/40 text-center focus:outline-none focus:shadow-white/50 focus:shadow-md'
+              onBlur={handleSearch}
             />
           </div>
 
           <div className='mt-10'>
-            <Link href='/rooms/abvd-egfa-888a-3267'>
+            <Link href='/rooms/f41ce51e-4c7e-8f57-ebeb-3e8091a9cb11'>
               <button>ルーム作成</button>
             </Link>
           </div>
