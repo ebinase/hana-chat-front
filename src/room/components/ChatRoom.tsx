@@ -1,112 +1,14 @@
 'use client';
 
-import useSWRImmutable from 'swr/immutable';
-import { MesssageData } from '../../share/types/API/messages';
 import MessageTimeline from './MessageTimeline';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
 import InputArea from './InputArea';
-import useUserName from '../../share/hooks/useUserName';
-
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-type Result = {
-  data: MesssageData[];
-  isLoading: boolean;
-};
-
-const useChat = (uniqueKey: string): Result => {
-  const { data, isLoading } = useSWRImmutable(`/api/rooms/${uniqueKey}/messages`, fetcher);
-
-  return {
-    data: data?.messages ?? [],
-    isLoading,
-  };
-};
+import useChat from '../hooks/useChat';
 
 type Props = { uniqueKey: string };
 
 const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
-  const { name } = useUserName();
-
-  const { data, isLoading } = useChat(uniqueKey);
-
-  const [messages, setMessages] = useState<MesssageData[]>([]);
-
-  const socketRef = useRef<WebSocket>();
-  const [isConnected, setIsConnected] = useState(false);
-
-  // websocket周り
-  useEffect(() => {
-    socketRef.current = new WebSocket('ws://localhost:8080/socket');
-    console.log(socketRef);
-    socketRef.current.onopen = function () {
-      setIsConnected(true);
-      console.log('Connected');
-    };
-
-    socketRef.current.onclose = function () {
-      console.log('closed');
-      setIsConnected(false);
-    };
-
-    return () => {
-      if (socketRef.current == null) {
-        return;
-      }
-      socketRef.current.close();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!socketRef.current) {
-      console.log('有効なWebSocket接続がありません！');
-      return;
-    }
-
-    // 受信時の処理
-    socketRef.current.onmessage = (event: { data: string }) => {
-      // socketRef.current.onmessage = (event: { data: MesssageData&{uniqueKey: string} }) => {
-      //   if (event.data.uniqueKey !== uniqueKey) {
-      //     return;
-      //   }
-      console.log('MessageRecieved!!');
-
-      setMessages((old) => [
-        ...old,
-        {
-          id: messages.length + 1,
-          authorName: 'Server',
-          content: event.data,
-          createdAt: '2023/03/21-00:00:00',
-          updatedAt: '2023/03/21-00:00:00',
-        },
-      ]);
-    };
-  }, [socketRef, messages]);
-
-  useEffect(() => {
-    if (!isLoading && data) {
-      setMessages(data);
-    }
-  }, [isLoading, data]);
-
-  const sendMessage = (content: string) => {
-    console.log(content);
-    if (!content) return;
-
-    isConnected ? socketRef.current?.send(content) : console.log('WebSocketつながってないよ！');
-    setMessages((old) => [
-      ...old,
-      {
-        id: messages.length + 1,
-        authorName: name,
-        content,
-        createdAt: '2023/03/21-00:00:00',
-        updatedAt: '2023/03/21-00:00:00',
-      },
-    ]);
-  };
+  const {messages, isLoading, sendMessage} = useChat({uniqueKey})
 
   return (
     <div

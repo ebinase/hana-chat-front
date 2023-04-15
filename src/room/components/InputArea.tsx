@@ -3,7 +3,7 @@
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import useUserName from '../../share/hooks/useUserName';
 
-type Props = { sendMessage: (content: string) => void };
+type Props = { sendMessage: (content: string, authorName: string) => void };
 
 const InputArea: React.FC<Props> = ({ sendMessage }) => {
   const { name, setName } = useUserName();
@@ -11,7 +11,7 @@ const InputArea: React.FC<Props> = ({ sendMessage }) => {
   const [value, setValue] = useState<string>('');
 
   const submitMessage = () => {
-    sendMessage(value);
+    sendMessage(value, name);
     setValue('');
   };
 
