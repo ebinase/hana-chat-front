@@ -9,9 +9,10 @@ import useUserName from '../../share/hooks/useUserName';
 type Props = {
   messages: MesssageData[];
   isLoading: boolean;
+  hasError: boolean;
 };
 
-const MessageTimeline: React.FC<Props> = ({ messages, isLoading }) => {
+const MessageTimeline: React.FC<Props> = ({ messages, isLoading, hasError }) => {
   const scrollBottomRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
@@ -20,11 +21,7 @@ const MessageTimeline: React.FC<Props> = ({ messages, isLoading }) => {
 
   const { name } = useUserName();
 
-  // useEffect(() => {
-  //   const currentName = name;
-  // }, [name])
-
-  const displayData = !isLoading ? messages : [...Array(10)];
+  const displayData = !isLoading ? messages : [...Array(10)]; 
 
   return (
     <div className='flex flex-col gap-3 overflow-y-auto h-[650px]'>
@@ -43,6 +40,7 @@ const MessageTimeline: React.FC<Props> = ({ messages, isLoading }) => {
           </div>
         );
       })}
+      {hasError ? <p className='text-gray-600/70'>読込中にエラーが発生しました</p> : null}
       <div ref={scrollBottomRef} />
     </div>
   );

@@ -5,16 +5,18 @@ import useMessages from './useMessages';
 import useConnection from './useConnection';
 
 const useChat = (uniqueKey: string) => {
-  const { messages, isLoading, addMessage } = useMessages(uniqueKey);
+  const { messages, isLoading, addMessage, error } = useMessages(uniqueKey);
   const { isConnected, connection } = useConnection();
 
   const sendMessage = (content: string, authorName: string) => {
     if (!content) return;
     console.log('MessageSent!!');
 
-    console.log(JSON.stringify({content, authorName, uniqueKey}));
-    
-    isConnected ? connection?.send(JSON.stringify({content, authorName, uniqueKey})) : console.log('WebSocketつながってないよ！');
+    console.log(JSON.stringify({ content, authorName, uniqueKey }));
+
+    isConnected
+      ? connection?.send(JSON.stringify({ content, authorName, uniqueKey }))
+      : console.log('WebSocketつながってないよ！');
   };
 
   useEffect(() => {
@@ -41,7 +43,7 @@ const useChat = (uniqueKey: string) => {
     };
   }, [connection, messages, addMessage]);
 
-  return { messages, isLoading, sendMessage, isConnected };
+  return { messages, isLoading, sendMessage, hasError: !isConnected || !!error };
 };
 
 export default useChat;

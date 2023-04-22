@@ -7,21 +7,32 @@ import { useEffect, useState } from 'react';
 type Result = {
   data: MesssageData[];
   isLoading: boolean;
+  error: Error | undefined;
 };
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) =>
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) throw new Error(data.error);
+      return data;
+    });
 
 const useInitialFetch = (uniqueKey: string): Result => {
-  const { data, isLoading } = useSWRImmutable(`http://localhost:8080/rooms/${uniqueKey}/messages`, fetcher);
+  const { data, isLoading, error } = useSWRImmutable(
+    `http://localhost:8080/rooms/${uniqueKey}/messages`,
+    fetcher,
+  );
   return {
     data: data?.messages ?? [],
     isLoading,
+    error,
   };
 };
 
 const useMessages = (uniqueKey: string) => {
   const [messages, setMessages] = useState<MesssageData[]>([]);
-  const { data, isLoading } = useInitialFetch(uniqueKey);
+  const { data, isLoading, error } = useInitialFetch(uniqueKey);
 
   useEffect(() => {
     if (!isLoading) {
@@ -35,6 +46,7 @@ const useMessages = (uniqueKey: string) => {
     messages,
     isLoading,
     addMessage,
+    error,
   };
 };
 
