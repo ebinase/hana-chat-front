@@ -26,7 +26,13 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
               {isRoomDataLoading ? '・' : roomData.roomName}
             </h2>
           </div>
-          <div className='basis-[20%] text-right  shrink-0'></div>
+          <div className='basis-[20%] shrink-0 flex justify-end'>
+            {hasError ? (
+              <div className='bg-rose-500 text-white px-2 py-1 rounded-md'>OFFLINE</div>
+            ) : (
+              <div className='bg-emerald-500 text-white px-2 py-1 rounded-md'>ONLINE</div>
+            )}
+          </div>
         </header>
         <main className='px-8 flex flex-col flex-grow'>
           <div className='my-2'>
