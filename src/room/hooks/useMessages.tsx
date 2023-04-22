@@ -12,7 +12,7 @@ type Result = {
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const useInitialFetch = (uniqueKey: string): Result => {
-  const { data, isLoading } = useSWRImmutable(`/api/rooms/${uniqueKey}/messages`, fetcher);
+  const { data, isLoading } = useSWRImmutable(`http://localhost:8080/rooms/${uniqueKey}/messages`, fetcher);
   return {
     data: data?.messages ?? [],
     isLoading,
@@ -27,7 +27,7 @@ const useMessages = (uniqueKey: string) => {
     if (!isLoading) {
       setMessages(data);
     }
-  }, [isLoading, data]);
+  }, [isLoading]);
 
   const addMessage = (message: MesssageData) => setMessages([...messages, message]);
 
