@@ -1,7 +1,6 @@
 'use client';
 
 import type { NextPage } from 'next';
-import Link from 'next/link';
 import { MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -30,6 +29,27 @@ const Home: NextPage = () => {
       router.push('/rooms/' + target.value);
     }
   };
+
+  const handleRoomCreate = async () => {
+    const response = await fetch('http://localhost:8080/rooms', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ roomName: 'New Room' }),
+    });
+
+    if (!response.ok) {
+      console.log('作成に失敗！');
+      return;
+    }
+    
+    const data = await response.json();
+    if (data.errors) {
+      alert(data.errors);
+      return;
+    }
+    router.push('/rooms/' + data.uniqueKey);
+  };
+
   return (
     <div>
       <main className='h-screen w-full flex items-center justify-center' onMouseMove={tilt}>
@@ -76,9 +96,7 @@ const Home: NextPage = () => {
           </div>
 
           <div className='mt-10'>
-            <Link href='/rooms/f41ce51e-4c7e-8f57-ebeb-3e8091a9cb11'>
-              <button>ルーム作成</button>
-            </Link>
+            <button onClick={handleRoomCreate}>ルーム作成</button>
           </div>
         </div>
       </main>
