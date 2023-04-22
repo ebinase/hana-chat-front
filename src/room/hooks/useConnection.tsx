@@ -8,7 +8,7 @@ const useConnection = () => {
 
   // websocket周り
   useEffect(() => {
-    socketRef.current = new WebSocket('ws://localhost:8080/socket');
+    socketRef.current = new WebSocket('ws://localhost:8081/socket');
     console.log(socketRef);
     socketRef.current.onopen = function () {
       setIsConnected(true);

@@ -9,17 +9,12 @@ const useChat = (uniqueKey: string) => {
   const { isConnected, connection } = useConnection();
 
   const sendMessage = (content: string, authorName: string) => {
-    console.log(content);
     if (!content) return;
+    console.log('MessageSent!!');
 
-    isConnected ? connection?.send(content) : console.log('WebSocketつながってないよ！');
-    addMessage({
-      id: messages.length + 1,
-      authorName: authorName,
-      content,
-      createdAt: '2023/03/21-00:00:00',
-      updatedAt: '2023/03/21-00:00:00',
-    });
+    console.log(JSON.stringify({content, authorName, uniqueKey}));
+    
+    isConnected ? connection?.send(JSON.stringify({content, authorName, uniqueKey})) : console.log('WebSocketつながってないよ！');
   };
 
   useEffect(() => {
@@ -31,18 +26,22 @@ const useChat = (uniqueKey: string) => {
     // 受信時の処理
     connection.onmessage = (event: { data: string }) => {
       console.log('MessageRecieved!!');
+      console.log(event.data);
+
+      // jsonをparse
+      const parsedData = JSON.parse(event.data);
 
       addMessage({
-        id: messages.length + 1,
-        authorName: 'Server',
-        content: event.data,
-        createdAt: '2023/03/21-00:00:00',
-        updatedAt: '2023/03/21-00:00:00',
+        id: parsedData.id,
+        authorName: parsedData.authorName,
+        content: parsedData.content,
+        createdAt: parsedData.createdAt,
+        updatedAt: parsedData.updatedAt ?? '',
       });
     };
   }, [connection, messages, addMessage]);
 
-  return { messages, isLoading, sendMessage };
+  return { messages, isLoading, sendMessage, isConnected };
 };
 
 export default useChat;
