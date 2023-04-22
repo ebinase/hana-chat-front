@@ -4,10 +4,12 @@ import MessageTimeline from './MessageTimeline';
 import Link from 'next/link';
 import InputArea from './InputArea';
 import useChat from '../hooks/useChat';
+import useRoomData from '../hooks/useRoomData';
 
 type Props = { uniqueKey: string };
 
 const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
+  const { roomData, isLoading: isRoomDataLoading } = useRoomData(uniqueKey);
   const { messages, isLoading, sendMessage } = useChat(uniqueKey);
 
   return (
@@ -20,7 +22,7 @@ const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
             </Link>
           </div>
           <div className='grow'>
-            <h2 className='text-white font-extrabold text-2xl'>Sample Room</h2>
+            <h2 className='text-white font-extrabold text-2xl'>{isRoomDataLoading ? '・' : roomData.roomName}</h2>
           </div>
           <div className='basis-[20%] text-right  shrink-0'></div>
         </header>
