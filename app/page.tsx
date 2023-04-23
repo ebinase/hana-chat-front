@@ -3,6 +3,8 @@
 import type { NextPage } from 'next';
 import { MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import useRoomHistory from '../src/share/hooks/useRoomHistory';
+import Link from 'next/link';
 
 const tilt = (e: MouseEvent<HTMLDivElement>) => {
   const target = document.querySelector<HTMLDivElement>('#tiltContainer');
@@ -20,6 +22,7 @@ const tilt = (e: MouseEvent<HTMLDivElement>) => {
 };
 
 const Home: NextPage = () => {
+  const { history, reset } = useRoomHistory();
   const router = useRouter();
 
   const handleSearch = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -41,7 +44,7 @@ const Home: NextPage = () => {
       console.log('作成に失敗！');
       return;
     }
-    
+
     const data = await response.json();
     if (data.errors) {
       alert(data.errors);
@@ -74,7 +77,9 @@ const Home: NextPage = () => {
             </svg>
           </div>
 
-          <h1 className='text-white/80 text-4xl'>Welcome to HANA-Chat</h1>
+          <h1 className='text-white/80 text-4xl' onClick={reset}>
+            Welcome to HANA-Chat
+          </h1>
 
           <div className='mt-10 flex justify-between gap-2'>
             <div className='w-7 fill-white/50'>
@@ -93,6 +98,14 @@ const Home: NextPage = () => {
               className='grow bg-white/40 text-center focus:outline-none focus:shadow-white/50 focus:shadow-md'
               onBlur={handleSearch}
             />
+          </div>
+
+          <div className='h-16 mt-2 overflow-y-auto'>
+            {history.map((data, index) => (
+              <div key={index}>
+                <Link href={`/rooms/${data[0]}`}>{data[1]}</Link>
+              </div>
+            ))}
           </div>
 
           <div className='mt-10'>

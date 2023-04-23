@@ -5,12 +5,21 @@ import Link from 'next/link';
 import InputArea from './InputArea';
 import useChat from '../hooks/useChat';
 import useRoomData from '../hooks/useRoomData';
+import { useEffect } from 'react';
+import useRoomHistory from '../../share/hooks/useRoomHistory';
 
 type Props = { uniqueKey: string };
 
 const ChatRoom: React.FC<Props> = ({ uniqueKey }) => {
   const { roomData, isLoading: isRoomDataLoading } = useRoomData(uniqueKey);
   const { messages, isLoading, sendMessage, hasError } = useChat(uniqueKey);
+
+  const { add } = useRoomHistory();
+  useEffect(() => {
+    if (isRoomDataLoading || !roomData.roomName) return;
+    console.log('history added');
+    add(uniqueKey, roomData.roomName);
+  }, [uniqueKey, isRoomDataLoading]);
 
   return (
     <div id='backGround' className='h-screen w-screen flex items-center justify-center'>
