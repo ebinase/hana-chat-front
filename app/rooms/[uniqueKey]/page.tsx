@@ -1,3 +1,5 @@
+'use client';
+
 import { NextPage } from 'next';
 import ChatRoom from '../../../src/room/components/ChatRoom';
 

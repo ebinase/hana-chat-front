@@ -11,7 +11,10 @@ type Result = {
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const useRoomData = (uniqueKey: string): Result => {
-  const { data, isLoading } = useSWRImmutable(`http://localhost:8080/rooms/${uniqueKey}/detail`, fetcher);
+  const { data, isLoading } = useSWRImmutable(
+    `http://localhost:8080/rooms/${uniqueKey}/detail`,
+    fetcher,
+  );
   return {
     roomData: data ?? [],
     isLoading,

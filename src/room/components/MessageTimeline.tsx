@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { MesssageData } from '../../share/types/API/messages';
 import Message from './Message';
 import DummyMessage from './DummyMessage';
@@ -21,7 +21,7 @@ const MessageTimeline: React.FC<Props> = ({ messages, isLoading, hasError }) => 
 
   const { name } = useUserName();
 
-  const displayData = !isLoading ? messages : [...Array(10)]; 
+  const displayData = !isLoading ? messages : [...Array(10)];
 
   return (
     <div className='flex flex-col gap-3 overflow-y-auto h-[650px]'>

@@ -14,7 +14,7 @@ const fetcher = (url: string) =>
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      if (data.error) throw new Error(data.error);
+      if (data.errors) throw new Error(data.errors);
       return data;
     });
 
